@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"runtime"
 )
 
 var (
@@ -60,13 +61,17 @@ func mqttConnect(cfg *ini.File, shell string) {
 
 		if cfg.HasSection(section); cfg.Section(section).HasKey(key) {
 			command := cfg.Section(section).Key(key).String()
-			cmd := exec.Command(shell, argCombine(shell), command)
+			arg := "/C"
+			if runtime.GOOS == "linux" || shell == "bash" {
+				arg = "-c"
+			}
+			cmd := exec.Command(shell, arg, command)
 			out, err := cmd.CombinedOutput()
 			if err != nil {
-				fmt.Println(out)
-				log.Fatal(err)
+				fmt.Printf("[-] %s\n%s\n", command, err)
+			} else {
+				fmt.Printf("[+] %s\n%s\n", command, out)
 			}
-			fmt.Printf("[+] %s\n%s\n", command, out)
 		}
 	})
 
@@ -92,13 +97,4 @@ func Subscribe(client mqtt.Client, topic string) {
 	token := client.Subscribe(topic, 1, nil)
 	token.Wait()
 	fmt.Println("[+] Subscribe topic:", topic)
-}
-
-func argCombine(shell string) string {
-	if shell == "cmd" {
-		return "/C"
-	} else {
-		return "-c"
-	}
-
 }
