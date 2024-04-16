@@ -19,15 +19,15 @@ jobs:
         with:
           go-version: '>=1.20.1'
       - name: build-linux-arm
-        run: GOOS=linux GOARCH=arm GOARM=7 go build -ldflags="-s -w -X 'main.Version=${{  gitea.ref }}'" -o bin/linux-arm
+        run: GOOS=linux GOARCH=arm GOARM=7 go build -ldflags="-s -w -X 'main.Version=${{ gitea.ref }}'" -o bin/linux-arm
       - name: build-linux-arm64
-        run: GOOS=linux GOARCH=arm64 go build -ldflags="-s -w -X 'main.Version=${{  gitea.ref }}'" -o bin/linux-arm64
+        run: GOOS=linux GOARCH=arm64 go build -ldflags="-s -w -X 'main.Version=${{ gitea.ref }}'" -o bin/linux-arm64
       - name: build-linux-amd64
-        run: GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X 'main.Version=${{  gitea.ref }}'" -o bin/linux-amd64
+        run: GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -X 'main.Version=${{ gitea.ref }}'" -o bin/linux-amd64
       - name: build-darwin-amd64
-        run: GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w -X 'main.Version=${{  gitea.ref }}'" -o bin/darwin-amd64
+        run: GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w -X 'main.Version=${{ gitea.ref }}'" -o bin/darwin-amd64
       - name: build-windows-amd64
-        run: GOOS=windows GOARCH=amd64 go build -ldflags="-s -w -X 'main.Version=${{  gitea.ref }}'" -o bin/windows-amd64.exe
+        run: GOOS=windows GOARCH=amd64 go build -ldflags="-s -w -X 'main.Version=${{ gitea.ref }}'" -o bin/windows-amd64.exe
       - uses: https://gitea.lan/actions/release-action@main
         with:
           files: |-
